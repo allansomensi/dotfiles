@@ -1,7 +1,6 @@
 return {
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
     opts = require "configs.conform",
   },
 
@@ -14,15 +13,14 @@ return {
 
   {
     'mrcjkb/rustaceanvim',
-    version = '^5', -- Recommended
+    version = '^6',
     lazy = false, -- This plugin is already lazy
-    ft = "rust",
     config = function ()
       local mason_registry = require('mason-registry')
       local codelldb = mason_registry.get_package("codelldb")
-      local extension_path = codelldb:get_install_path() .. "/extension/"
+      local extension_path = vim.fn.expand("$MASON/packages/codelldb/extension/")
       local codelldb_path = extension_path .. "adapter/codelldb"
-      local liblldb_path = extension_path.. "lldb/lib/liblldb.dylib"
+	    local liblldb_path = extension_path .. "lldb/lib/liblldb.so"
       local cfg = require('rustaceanvim.config')
 
       vim.g.rustaceanvim = {
@@ -72,31 +70,7 @@ return {
     'saecki/crates.nvim',
     ft = {"toml"},
     config = function()
-      require("crates").setup {
-        completion = {
-          cmp = {
-            enabled = true
-          },
-        },
-      }
-      require('cmp').setup.buffer({
-        sources = { { name = "crates" }}
-      })
+      require("crates").setup()
     end
-  },
-
-  {
-    'NoahTheDuke/vim-just',
-    ft = { "just" },
   }
-
-  -- {
-  -- 	"nvim-treesitter/nvim-treesitter",
-  -- 	opts = {
-  -- 		ensure_installed = {
-  -- 			"vim", "lua", "vimdoc",
-  --      "html", "css"
-  -- 		},
-  -- 	},
-  -- },
 }
